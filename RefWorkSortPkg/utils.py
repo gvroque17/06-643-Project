@@ -69,4 +69,4 @@ def referenced_work_sort(oaid):
             else:
                 continue
 
-    return(pprint(my_dict, sort = False))
+    return(pprint(my_dict, sort_dicts=False))
