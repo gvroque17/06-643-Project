@@ -44,7 +44,7 @@ class Works:
                         for au in self.data["authorships"]]
             return _authors[-1]
 
-        def referenced_works(self):
+        def ref_works(self):
             """Create URL list for cited papers within paper of interest."""
             rworks = []  # referenced work
 
@@ -62,7 +62,7 @@ def referenced_work_sort(oaid):
     """Organize referenced works for a paper by author."""
     # uses the function Works to get JSON information for user input OAID
     w = Works(oaid)
-    rw = w.referenced_works()  # gets referenced work information (citations)
+    rw = w.ref_works()  # gets referenced work information (citations)
     firstauths = []  # list of first authors for referenced works
     refs = []  # formatted referenced work information for each citation
     # dictionary with main authors as keys and
