@@ -1,15 +1,12 @@
-"""Test to ping OAID website to check it is up and running."""
+'''test to ping website to check it is up and running properly given inputted doi  '''
 
 import requests
-
-
-def ping_site(oaid):
-    """Check status code from OAID website ping."""
-    # User inputs only the OAID of the paper of interest
-    # Acessing only OAID receives a status 403: access forbidden
-    # Concatenate OAID to use entire URL to check website is working
-    url = 'https://api.openalex.org/works/' + oaid
-
+def ping_site(doi):
+    # User passes in only the doi of the item
+    # if we try to access just the doi we receive a status 403: access forbidden
+    # So here we are concatentin the doi to use the entire url to check if the website is working
+    url = 'https://api.openalex.org/works/' + doi
+    
     # requests website server response and gets returns status code
     req = requests.get(url)
     statuscode = req.status_code
