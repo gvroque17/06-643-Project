@@ -1,16 +1,23 @@
+"""Define utility functions for our package."""
+
 import time
 import requests
-import itertools 
+import itertools
 from pprint import pprint
 
+
 class Works:
+    """Grab and sort information about given OAID."""
+
     def __init__(self, oaid):
+        """Get JSON data from user input OAID."""
         self.oaid = oaid
         self.req = requests.get(f"https://api.openalex.org/works/{oaid}")
         self.data = self.req.json()
 
-
     def __repr__(self):
+        """Format and filter JSON data for dictionary input."""
+        # author information put into a string of authors
         _authors = [au["author"]["display_name"] for au in self.data["authorships"]]
         if len(_authors) == 1:
             authors = _authors[0]
@@ -18,37 +25,34 @@ class Works:
             authors = ", ".join(_authors[0:-1]) + " and " + _authors[-1]
 
         title = self.data["title"]
-
         year = self.data["publication_year"]
-        citedby = self.data["cited_by_count"]
-
+        citedbycount = self.data["cited_by_count"]
         oa = self.data["id"]
-        s = f'{authors}, {title}, ({year}), {self.data["doi"]}. cited by: {citedby}. {oa}'
-        return s
-    
-    def author(self, oaid): 
-        '''Returns the main author for a paper'''    
-        _authors = [au["author"]["display_name"] for au in self.data["authorships"]]
-        # print(_authors[-1])
-        return _authors[-1]
 
-    
-    
-    def referenced_works(self):
-        '''Makes a list of URLs all the cited papers within a paper of interest'''
-        rworks = []
-        
-        for rw_url in self.data["referenced_works"]:
-            rw = Works(rw_url)
-            rworks += [rw]
-            time.sleep(0.101)
-        return rworks
+        formattedInfo = (
+            f'{authors}, {title}, ({year}), {self.data["doi"]}. '
+            f"cited by: {citedbycount}. {oa}"
+        )
+        return formattedInfo
 
-    
-    
-    
+        def author(self, oaid):
+            """Return the main author for a paper."""
+            _authors = [au["author"]["display_name"] for au in self.data["authorships"]]
+            return _authors[-1]
+
+        def referenced_works(self):
+            """Create URL list for cited papers within paper of interest."""
+            rworks = []
+
+            for rw_url in self.data["referenced_works"]:
+                rw = Works(rw_url)
+                rworks.append(rw)
+                time.sleep(0.101)
+            return rworks
+
+
 def referenced_work_sort(oaid):
-
+    """Organize referenced works for a paper by author."""
     w = Works(oaid)
     rw = w.referenced_works()
     lastauths = []
@@ -61,19 +65,17 @@ def referenced_work_sort(oaid):
             if lastauth in lastauths:
                 ref = repr(_rw)
                 refs.append(ref)
-            # print(f"{i + 1:2d}. {ref}\n\n")
-        except:
-            print(f'Caught exception for {_rw.oaid}.')
+        except Exception:
+            print(f"Caught exception for {_rw.oaid}.")
 
     for i, key in enumerate(lastauths):
-        if ((key not in my_dict.keys())): 
+        if key not in my_dict.keys():
             my_dict[key] = []
             my_dict[key].append(refs[i])
         else:
-            if ((key not in my_dict[key])): 
+            if key not in my_dict[key]:
                 my_dict[key].append(refs[i])
             else:
                 continue
 
-    return(pprint(my_dict))
-    # pprint(my_dict)
+    return pprint(my_dict, sort_dicts=False)
