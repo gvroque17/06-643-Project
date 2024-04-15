@@ -2,7 +2,7 @@
 
 import time
 import requests
-import itertools
+# import itertools
 from pprint import pprint
 
 
@@ -88,6 +88,6 @@ def referenced_work_sort(oaid):
         else:
             # Appends to entry already in dictionary
             ref_dict[key].append(refs[i])
-
+    # Superior printing format: pprint but gives test error, returns None
     # return (pprint(ref_dict, sort_dicts=False))
     return ref_dict

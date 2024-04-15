@@ -2,7 +2,6 @@
 
 import requests
 import pytest
-from RefWorkSortPkg import referenced_work_sort
 
 
 @pytest.fixture(scope="module", params=[
@@ -14,7 +13,7 @@ def oaid(request):
     return request.param
 
 
-def test_ping_good_site(oaid):
+def test_ping_site(oaid):
     """Check status code from OAID website ping."""
     # User inputs only the OAID of the paper of interest
     # Acessing only OAID receives a status 403: access forbidden
@@ -31,5 +30,6 @@ def test_ping_good_site(oaid):
         assert status == "URL found and working properly."
 
     except Exception:
+        # checking an invalid URL will throw an error code
         status = f"ERROR while pinging URL:returned status code: {statuscode}."
         assert status == "ERROR while pinging URL:returned status code: 404."

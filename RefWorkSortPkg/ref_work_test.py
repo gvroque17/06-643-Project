@@ -1,9 +1,9 @@
 """Test to check function output for references match."""
 
-import requests
+# import requests
 import pytest
 from RefWorkSortPkg import utils
-from RefWorkSortPkg import referenced_work_sort
+# from RefWorkSortPkg import referenced_work_sort
 
 
 @pytest.fixture(scope="module", params=[
