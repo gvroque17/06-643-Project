@@ -9,7 +9,10 @@ setup(name='RefWorkSortPkg',
       maintainer_email='gvargasr@andrew.cmu.edu',
       license='MIT',
       packages=['RefWorkSortPkg'],
-      entry_points={'console_scripts': ['referenced_work_sort=RefWorkSortPkg.utils:referenced_work_sort']},  
+      entry_points={
+          'console_scripts': [
+              'referenced_work_sort=RefWorkSortPkg.utils:referenced_work_sort']
+      },
       scripts=[],
       long_description='''For a paper OID, lists referenced work grouped by author
 =========================''')

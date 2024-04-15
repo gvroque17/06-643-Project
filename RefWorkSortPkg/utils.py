@@ -18,7 +18,8 @@ class Works:
     def __repr__(self):
         """Format and filter JSON data for dictionary input."""
         # sting of author information using the display name from JSON file
-        _authors = [au["author"]["display_name"] for au in self.data["authorships"]]
+        _authors = [au["author"]["display_name"]
+                    for au in self.data["authorships"]]
         if len(_authors) == 1:
             authors = _authors[0]
         else:
@@ -31,17 +32,16 @@ class Works:
         oa = self.data["id"]  # open alex id
         # putting information into desirable output format
         # and assigning to returned varible
-        formattedInfo = (
-            f'{authors}, {title}, ({year}), {self.data["doi"]}. '
-            f"cited by: {citedbycount}. {oa}"
-        )
+        formattedInfo = (f'{authors}, {title}, ({year}), {self.data["doi"]}. '
+                         f"cited by: {citedbycount}. {oa}")
         return formattedInfo
 
     def author(self, oaid):
         """Return the main author for a paper."""
         # the main author of a paper is listed last,
         # so we only return the last author from the string of authors
-        _authors = [au["author"]["display_name"] for au in self.data["authorships"]]
+        _authors = [au["author"]["display_name"]
+                    for au in self.data["authorships"]]
         return _authors[-1]
 
     def ref_works(self):
@@ -89,4 +89,5 @@ def referenced_work_sort(oaid):
             # Appends to entry already in dictionary
             ref_dict[key].append(refs[i])
 
-    return pprint(ref_dict, sort_dicts=False)
+    # return (pprint(ref_dict, sort_dicts=False))
+    return ref_dict
