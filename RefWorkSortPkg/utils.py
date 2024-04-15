@@ -36,26 +36,26 @@ class Works:
                          f"cited by: {citedbycount}. {oa}")
         return formattedInfo
 
-        def author(self, oaid):
-            """Return the main author for a paper."""
-            # the main author of a paper is listed last,
-            # so we only return the last author from the string of authors
-            _authors = [au["author"]["display_name"]
-                        for au in self.data["authorships"]]
-            return _authors[-1]
+    def author(self, oaid):
+        """Return the main author for a paper."""
+        # the main author of a paper is listed last,
+        # so we only return the last author from the string of authors
+        _authors = [au["author"]["display_name"]
+                    for au in self.data["authorships"]]
+        return _authors[-1]
 
-        def ref_works(self):
-            """Create URL list for cited papers within paper of interest."""
-            rworks = []  # referenced work
+    def ref_works(self):
+        """Create URL list for cited papers within paper of interest."""
+        rworks = []  # referenced work
 
-            # referenced work information URLs put into a list
-            # from JSON file referenced_works attribute
-            for rw_url in self.data["referenced_works"]:
-                rw = Works(rw_url)
-                rworks.append(rw)
-                # delay dded to not exceed limit of 10 requests per second
-                time.sleep(0.101)
-            return rworks
+        # referenced work information URLs put into a list
+        # from JSON file referenced_works attribute
+        for rw_url in self.data["referenced_works"]:
+            rw = Works(rw_url)
+            rworks.append(rw)  # rworks += [rw]
+            # delay dded to not exceed limit of 10 requests per second
+            time.sleep(0.101)
+        return rworks
 
 
 def referenced_work_sort(oaid):
@@ -89,4 +89,4 @@ def referenced_work_sort(oaid):
             # Appends to entry already in dictionary
             ref_dict[key].append(refs[i])
 
-    return pprint(ref_dict, sort_dicts=False)
+    return (pprint(ref_dict, sort_dicts=False))

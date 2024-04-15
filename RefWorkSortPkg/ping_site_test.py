@@ -8,7 +8,7 @@ def ping_site(oaid):
     # User inputs only the OAID of the paper of interest
     # Acessing only OAID receives a status 403: access forbidden
     # Concatenate OAID to use entire URL to check website is working
-    url = 'https://api.openalex.org/works/' + oaid
+    url = "https://api.openalex.org/works/" + oaid
 
     # requests website server response and gets returns status code
     req = requests.get(url)
