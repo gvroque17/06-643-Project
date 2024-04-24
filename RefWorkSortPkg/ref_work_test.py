@@ -3,7 +3,6 @@
 # import requests
 import pytest
 from RefWorkSortPkg import utils
-# from RefWorkSortPkg import referenced_work_sort
 
 
 @pytest.fixture(scope="module", params=[
