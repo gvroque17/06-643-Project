@@ -8,13 +8,10 @@ from RefWorkSortPkg import utils
 
 @pytest.fixture(scope="module", params=[
     ('https://doi.org/10.48550/arxiv.2306.10055',
-     {}),  # no references OAID
+     '{}'),  # no references OAID
     ('https://doi.org/10.1016/0002-9378(87)90010-x',
-     {'Douglas A. Triplett':
-      ['Douglas A. Triplett, Hemostasis: A Case Oriented Approach, (1985), None. cited by: 1. https://openalex.org/W606611693'],
-      'John H. Griffin':
-      ['Bernhard Lämmle and John H. Griffin, Formation of the Fibrin Clot: the Balance of Procoagulant and Inhibitory Factors, (1985), https://doi.org/10.1016/s0308-2261(21)00478-1. cited by: 50. https://openalex.org/W2411065424']}
-     )  # 2 references OAID
+     "{'M. F. Murphy': [('M. F. Murphy, Hemostasis. A Case Oriented Approach, '\n                   '(1986), https://doi.org/10.1136/jcp.39.3.351-a. '\n                   'https://openalex.org/W1970802907',\n                   'cited by: 0')],\n 'John H. Griffin': [('Bernhard Lämmle and John H. Griffin, Formation of the '\n                      'Fibrin Clot: the Balance of Procoagulant and Inhibitory '\n                      'Factors, (1985), '\n                      'https://doi.org/10.1016/s0308-2261(21)00478-1. '\n                      'https://openalex.org/W2411065424',\n                      'cited by: 51')]}")
+    # 2 references OAID
 ])
 def oaid(request):
     """Fixture to pass oaid for testing."""

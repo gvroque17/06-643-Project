@@ -3,7 +3,7 @@
 import time
 import requests
 # import itertools
-from pprint import pprint
+import pprint
 
 
 class Works:
@@ -28,12 +28,11 @@ class Works:
         # cited by count and openalex id to variables
         title = self.data["title"]
         year = self.data["publication_year"]
-        citedbycount = self.data["cited_by_count"]
         oa = self.data["id"]  # open alex id
         # putting information into desirable output format
         # and assigning to returned varible
-        formattedInfo = (f'{authors}, {title}, ({year}), {self.data["doi"]}. '
-                         f"cited by: {citedbycount}. {oa}")
+        formattedInfo = (f'{authors}, {title}, ({year}), '
+                         f'{self.data["doi"]}. {oa}')
         return formattedInfo
 
     def author(self, oaid):
@@ -76,18 +75,36 @@ def referenced_work_sort(oaid):
             # adds reference information for each author to list of references
             if firstauth in firstauths:
                 ref = repr(_rw)
-                refs.append(ref)
+                # gets cited_by_count info, if missing == 0
+                cited_by_count = _rw.data.get("cited_by_count", 0)
+                # Append author, citation, and cited_by_count info
+                # Allows for sorting by cited_by_count later
+                refs.append((firstauth, ref, cited_by_count))
         except Exception:
             print(f"Caught exception for {_rw.oaid}.")
+
+    # Sort list of references based on first author first x[0],
+    # then descending on number of citations x[2]
+    sorted_refs = sorted(refs, key=lambda x: (x[0], x[2]), reverse=True)
+
     # filing works for each author under author keys for reference dictionary
-    for i, key in enumerate(firstauths):
-        # if key(author) not in dictionary, add author/citation list pair
-        if key not in ref_dict.keys():
-            ref_dict[key] = []  # create list of values(citations) for each key
-            ref_dict[key].append(refs[i])  # allows multiple values per key
+    for firstauth, ref, cited_by_count in sorted_refs:
+        # if first author(key) not in dictionary, add author/citation list pair
+        if firstauth not in ref_dict:
+            # create list of values(citations) for each key
+            ref_dict[firstauth] = []
+            cited_by_count = f"cited by: {cited_by_count}"
+            # allows multiple values per key
+            ref_dict[firstauth].append((ref, cited_by_count))
         else:
+            cited_by_count = f"cited by: {cited_by_count}"
             # Appends to entry already in dictionary
-            ref_dict[key].append(refs[i])
-    # Superior printing format: pprint but gives test error, returns None
-    # return (pprint(ref_dict, sort_dicts=False))
-    return ref_dict
+            ref_dict[firstauth].append((ref, cited_by_count))
+
+    # Pretty printing format: pprint but gives test error, returns None
+    # Using pformat to get a non-None output
+    formatted_output = pprint.pformat(ref_dict, sort_dicts=False)
+    # print allows user to see output formatted nicely
+    print(formatted_output)
+    # returns output
+    return formatted_output
