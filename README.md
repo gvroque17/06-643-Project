@@ -1,4 +1,3 @@
-%%writefile 06643Project/README.md
 
 ## 06-643-Project
 
